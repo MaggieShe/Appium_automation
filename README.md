@@ -1,16 +1,18 @@
-# How to install Appium inspector? 
-  https://github.com/appium/appium-desktop#the-inspector  
+# Requirements
 
+1. Install Appium-desktop: http://appium.io/
 
-# How to generate a ios simulator application?
-  exp build:ios -t simulator
-  exp build:status
-  
-# How to find the element? 
-  -- Appium inspectior
-  -- Java:
-      driver.findElement(MobileBy.iOSNsPredicateString("name CONTAINS 'Payment'"));
-      driver.findElement(By.xpath("(//XCUIElementTypeOther[@name=\"\uF060\"])[2]"));
-      driver.findElement(By.id("LOGIN"));
+2. Launch appium server 
+
+3. Start inspector session
+
+4. Set desired capabilities: https://appium.io/slate/en/master/?ruby#appium-server-capabilities
+
+# Get Started
+
+1. Start session
+
+2. Run IosBasic.java / IosBasic_iPad.java
+    
   
   
