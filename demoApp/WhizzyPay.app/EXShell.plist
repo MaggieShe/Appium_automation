@@ -7,6 +7,6 @@
 	<key>isSplashScreenDisabled</key>
 	<true/>
 	<key>manifestUrl</key>
-	<string>https://exp.host:443/@maggie/whizzypay-production</string>
+	<string>https://exp.host:443/@dev-wetech/whizzypay-production</string>
 </dict>
 </plist>

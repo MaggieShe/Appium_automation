@@ -49,7 +49,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.4.0-SNAPSHOT</string>
+	<string>0.7.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -90,7 +90,7 @@
 	<key>DTXcodeBuild</key>
 	<string>9A235</string>
 	<key>EXClientVersion</key>
-	<string>2.0.3.1010427</string>
+	<string>2.0.4.1010429</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
