@@ -17,13 +17,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.URL;
 
 
 public class IosBasic {
 
     public static IOSDriver driver;
-    public String validEmail = "maggie.she@wetech.io";
+    public String validEmail = "maggie.she+user@wetech.io";
     public String validPassword = "SMAdmin1";
     public String invalidEmail1 = "invalid@wetech.io";
     public String invalidEmail2 = "invalid";
@@ -40,9 +41,9 @@ public class IosBasic {
     @Before
     public void setUp() throws IOException, InterruptedException {
         new File(outputDirectory).mkdir();
-        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "11.0");
+        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "11.1");
         desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "iPhone 7");
-        desiredCapabilities.setCapability(MobileCapabilityType.APP, "/Users/maggie/git/whizzypay-mobile-test/demoApp/WhizzyPay.app");
+        desiredCapabilities.setCapability(MobileCapabilityType.APP, "/Users/maggie/git/whizzypay-mobile-test/demoApp/WhizzyPay_test.app");
         desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
         desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
         driver = new IOSDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
@@ -65,8 +66,8 @@ public class IosBasic {
     @Test
     public void testA_positiveFlow() throws IOException, InterruptedException {
         logValidEmail();
-        selectMerchant();
-        createTransaction();
+//        selectMerchant();
+//        createTransaction();
         nav_TranList_TranDetail();
         nav_TranDetail_TranList();
         openDrawer();
@@ -105,9 +106,7 @@ public class IosBasic {
     public void selectMerchant() throws IOException, InterruptedException {
 
         System.out.println("Select Merchant");
-//        TouchAction artwok = new TouchAction(driver);
-//        artwok.tap(69, 117).perform();
-        WebElement artwok = driver.findElement(By.id("ARTWOK \uF00C"));
+        WebElement artwok = driver.findElement(By.id("ARTWOK"));
         artwok.click();
         Thread.sleep(2000);
         takeScreenshot(driver);
@@ -119,51 +118,78 @@ public class IosBasic {
         System.out.println("Start to create a transaction");
         crossButton = driver.findElement(By.id("create"));
         crossButton.click();
+        Thread.sleep(2000);
         takeScreenshot(driver);
 
         /* Transaction_Create -> Add a Note */
         System.out.println("Start to add a note");
         addNoteButton =driver.findElement(By.id("Add Note"));
         addNoteButton.click();
+        Thread.sleep(2000);
         takeScreenshot(driver);
 
         System.out.println("Cancel a note");
         cancelButton = driver.findElement(By.id("CANCEL"));
         cancelButton.click();
+        Thread.sleep(2000);
         takeScreenshot(driver);
 
         addNoteButton.click();
-        noteTextField = (new WebDriverWait(driver, 60))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//XCUIElementTypeOther[@name=\"Edit Note DONE CANCEL\"])[3]/XCUIElementTypeOther[1]")));
+//        noteTextField = (new WebDriverWait(driver, 60))
+//                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//XCUIElementTypeOther[@name=\"Edit Note DONE CANCEL\"])[3]/XCUIElementTypeOther[1]")));
+        noteTextField = driver.findElement(By.id("noteInput"));
         noteTextField.sendKeys(noteMessage);
+        Thread.sleep(2000);
         takeScreenshot(driver);
 
         doneButton = driver.findElement(By.id("DONE"));
         doneButton.click();
         System.out.println("Successfully add a note");
+        Thread.sleep(2000);
         takeScreenshot(driver);
 
         /* Edit Existing Note */
         System.out.println("Change note");
         changeButton = driver.findElement(By.id("Change"));
         changeButton.click();
+        Thread.sleep(2000);
         takeScreenshot(driver);
         doneButton.click();
-
-        /* Create New Transaction */
-        System.out.println("Enter an amount");
-        amountTextField = (new WebDriverWait(driver, 60))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//XCUIElementTypeOther[@name=\"$\"]/XCUIElementTypeOther")));
-        amountTextField.sendKeys(amount);
-        takeScreenshot(driver);
-        System.out.println("Click create button");
-        createButton = driver.findElement(By.id("Create"));
-        createButton.click();
         takeScreenshot(driver);
         Thread.sleep(2000);
 
-        backArrow = driver.findElement(By.name("drawerIcon"));
+        /* Create New Transaction */
+//        System.out.println("Enter an amount");
+//        amountTextField = (new WebDriverWait(driver, 60))
+//                .until(ExpectedConditions.presenceOfElementLocated(By.id("amountInput")));
+//        amountTextField.sendKeys(amount);
+//        Thread.sleep(2000);
+//        takeScreenshot(driver);
+//        System.out.println("Click create button");
+//        createButton = driver.findElement(By.id("Create"));
+//        createButton.click();
+//        takeScreenshot(driver);
+//        Thread.sleep(10000);
+
+        /* Create Transaction -> Transaction History */
+        backArrow = driver.findElement(By.name("headerButton"));
         backArrow.click();
+        takeScreenshot(driver);
+        Thread.sleep(2000);
+    }
+
+    public void refund() throws IOException, InterruptedException {
+        /*  Refund a transaction from transaction list */
+        /*  Given I am on the [Transaction History] page
+            When I wipe a payment to the left
+            And the payment has <conditions>
+            conditions
+            not been fully refunded
+            is paid today
+            Then I expect to see the Refund button
+            And I click Refund button to navigate to the [Refund_input] page */
+
+
     }
 
     public void nav_TranList_TranDetail() throws IOException, InterruptedException {
@@ -189,7 +215,7 @@ public class IosBasic {
 
     public void nav_TranDetail_TranList() throws IOException, InterruptedException {
         System.out.println("tapping a backArrow on Transaction Detail page");
-        backArrow = driver.findElement(By.name("drawerIcon"));
+        backArrow = driver.findElement(By.id("headerButton"));
         backArrow.click();
         Thread.sleep(2000);
         takeScreenshot(driver);
@@ -204,7 +230,7 @@ public class IosBasic {
          */
 
         System.out.println("Open the drawer nemu");
-        drawerIcon = driver.findElement(By.name("drawerIcon"));
+        drawerIcon = driver.findElement(By.name("headerButton"));
         drawerIcon.click();
         takeScreenshot(driver);
     }
@@ -218,7 +244,7 @@ public class IosBasic {
          */
 
         System.out.println("Navigate to About page");
-        aboutMenu = driver.findElement(By.xpath("(//XCUIElementTypeOther[@name=\"\uF311 About\"])[2]"));
+        aboutMenu = driver.findElement(By.id("\uF359 About"));
         aboutMenu.click();
         Thread.sleep(2000);
         takeScreenshot(driver);
@@ -237,7 +263,7 @@ public class IosBasic {
         openDrawer();
         Thread.sleep(2000);
         takeScreenshot(driver);
-        transactionMenu = driver.findElement(By.name("\uF389 Transactions"));
+        transactionMenu = driver.findElement(By.id("\uF359 Transactions"));
         transactionMenu.click();
         Thread.sleep(2000);
         takeScreenshot(driver);
@@ -254,7 +280,7 @@ public class IosBasic {
 
         openDrawer();
         System.out.println("Log out");
-        logOut = driver.findElement(By.name("\uF359 Log Out"));
+        logOut = driver.findElement(By.id("\uF359 Log Out"));
         logOut.click();
         Thread.sleep(2000);
         takeScreenshot(driver);
